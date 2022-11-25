@@ -1245,6 +1245,36 @@ Transform:
   m_Father: {fileID: 348460696}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1065141410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1065141411}
+  m_Layer: 0
+  m_Name: BallControlObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1065141411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065141410}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.0044, y: -0.01024, z: -0.0032}
+  m_LocalScale: {x: 1.31, y: 0.25328, z: 1.3}
+  m_Children: []
+  m_Father: {fileID: 5145637660925537355}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1275213824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1911,7 +1941,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickerObject: {fileID: 628919495}
+  BallControlObject: {fileID: 1065141410}
   pickerMovementStatus: 0
+  _BallPoolMechanics:
+  - BallPoolElevator: {fileID: 0}
+    NumText: {fileID: 1708351922}
+    RequiredBallCount: 5
 --- !u!4 &1897258571
 Transform:
   m_ObjectHideFlags: 0
@@ -2565,7 +2600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3652503073574941619}
   m_Layer: 0
-  m_Name: Ground
+  m_Name: LEVEL_PLATFORM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2771,6 +2806,7 @@ Transform:
   - {fileID: 6269582370233319390}
   - {fileID: 7923120661455414780}
   - {fileID: 1530072085}
+  - {fileID: 1065141411}
   m_Father: {fileID: 628919496}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}

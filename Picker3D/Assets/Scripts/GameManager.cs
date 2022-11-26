@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.UI;
 
 
 [Serializable]
@@ -13,6 +14,7 @@ public class BallPoolMechanics
     public Animator BallPoolElevator;
     public TextMeshProUGUI NumText;
     public int RequiredBallCount;
+    public GameObject[] Balls;
 
 }
 
@@ -20,10 +22,15 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject pickerObject;
     [SerializeField] private GameObject BallControlObject;
-    [SerializeField] private bool pickerMovementStatus;
+    public bool pickerMovementStatus;
+    
 
 
     int collectedBallCount;
+    int totalCheckpointNumber;
+    int currentCheckpointNumber;
+
+
     [SerializeField] private  List<BallPoolMechanics> _BallPoolMechanics = new List<BallPoolMechanics>();
 
 
@@ -31,7 +38,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         pickerMovementStatus = true;
-        _BallPoolMechanics[0].NumText.text = collectedBallCount + "/" + _BallPoolMechanics[0].RequiredBallCount;
+
+        for(int i = 0; i < _BallPoolMechanics.Count; i++)
+        {
+            _BallPoolMechanics[i].NumText.text = collectedBallCount + "/" + _BallPoolMechanics[i].RequiredBallCount;
+        }
+
+        totalCheckpointNumber = _BallPoolMechanics.Count-1;
+
+        Debug.Log(_BallPoolMechanics.Count);
     }
 
     
@@ -66,6 +81,8 @@ public class GameManager : MonoBehaviour
     {
         pickerMovementStatus = false;
 
+        Invoke("PhaseCheck", 2f);
+
 
         Collider[] HitColl = Physics.OverlapBox(BallControlObject.transform.position,BallControlObject.transform.localScale / 2,Quaternion.identity);
 
@@ -73,7 +90,7 @@ public class GameManager : MonoBehaviour
         int i = 0;
         while(i < HitColl.Length)
         {
-            HitColl[i].GetComponent<Rigidbody>().AddForce(new Vector3(0,0,.8f),ForceMode.Impulse);
+            HitColl[i+1].GetComponent<Rigidbody>().AddForce(new Vector3(0,0,.8f),ForceMode.Impulse);
             
                 i++;
             
@@ -81,15 +98,54 @@ public class GameManager : MonoBehaviour
             
         }
 
-        Debug.Log(i);
-            
     }
 
     
-    private void OnDrawGizmos()
+    public void CountBalls()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(BallControlObject.transform.position,BallControlObject.transform.localScale);
+        collectedBallCount++;
+        _BallPoolMechanics[currentCheckpointNumber].NumText.text = collectedBallCount + "/" + _BallPoolMechanics[currentCheckpointNumber].RequiredBallCount;
     }
+
+
+    void PhaseCheck() {
+
+        if (collectedBallCount >= _BallPoolMechanics[currentCheckpointNumber].RequiredBallCount)
+        {
+            Debug.Log("YOU WIN");
+
+
+            _BallPoolMechanics[currentCheckpointNumber].BallPoolElevator.Play("ElevatorAnim");
+
+
+            foreach(var item in _BallPoolMechanics[currentCheckpointNumber].Balls)
+            {
+                item.SetActive(false);
+            }
+
+            if(currentCheckpointNumber == totalCheckpointNumber)
+            {
+                Debug.Log("GAME OVER!");
+                Time.timeScale = 0;
+            }
+            else
+            {
+                currentCheckpointNumber++;
+                collectedBallCount = 0;
+            }
+            
+            
+            
+            
+
+
+        }
+        else
+        {
+            Debug.Log("YOU LOST");
+        }
     
+    }
+
+
 }
